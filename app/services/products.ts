@@ -2,6 +2,35 @@ import type { CarProduct } from "~/types/product";
 
 const API_BASE = (import.meta.env.VITE_URL ?? "http://localhost:3000").replace(/\/+$/, "");
 
+async function doFetch(path: string, options?: RequestInit) {
+  const url = `${API_BASE}${path}`;
+  const response = await fetch(url, options || { method: "GET" });
+  return response;
+}
+
+export async function fetchAllProducts(filters?: { brand?: string; type?: string; year?: number }): Promise<CarProduct[]> {
+  try {
+    const params = new URLSearchParams();
+    if (filters?.brand) params.append("brand", filters.brand);
+    if (filters?.type) params.append("type", filters.type);
+    if (filters?.year) params.append("year", filters.year.toString());
+    
+    const queryString = params.toString();
+    const path = queryString ? `/api/veiculos?${queryString}` : "/api/veiculos";
+    
+    const response = await doFetch(path);
+    if (!response.ok) {
+      console.error(`Falha ao buscar lista de veículos. Status: ${response.status}`);
+      return [];
+    }
+    const data = await response.json();
+    return Array.isArray(data) ? data : [];
+  } catch (error) {
+    console.error("Erro de rede ao buscar produtos:", error);
+    return [];
+  }
+}
+
 export async function createVehicle(vehicle: any, token: string): Promise<CarProduct | null> {
   try {
     const response = await fetch(`${API_BASE}/api/veiculos`, {

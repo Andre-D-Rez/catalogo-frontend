@@ -1,25 +1,44 @@
+import ProductGrid from "~/components/ProductGrid";
 import MainStyle from "~/components/MainStyle";
+import { useEffect, useState } from "react";
+import { fetchAllProducts } from "~/services/products";
+import type { CarProduct } from "~/types/product";
 
 export function meta() {
   return [
-    { title: "Vitrine - Catálogo de Veículos" },
-    { name: "description", content: "Navegue por nossa coleção de veículos" },
+    { title: "Catálogo Completo - Catálogo de Carros" },
+    { name: "description", content: "Todos os veículos disponíveis" },
   ];
 }
 
 export default function Vitrine() {
+  const [products, setProducts] = useState<CarProduct[]>([]);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    fetchAllProducts().then((data) => {
+      setProducts(data);
+      setLoading(false);
+    });
+  }, []);
+
   return (
     <MainStyle>
-      <div className="max-w-7xl mx-auto">
-        <h1 className="text-3xl font-semibold text-purple-600 mb-2">Vitrine de Veículos</h1>
-        <p className="text-gray-600 mb-8">Explore nossa coleção completa</p>
-        
-        <div className="bg-white/50 rounded-xl border p-8 text-center">
-          <p className="text-gray-600">
-            Carregando veículos...
-          </p>
+      <section className="max-w-6xl">
+        <div className="flex items-end justify-between">
+          <div>
+            <h1 className="text-2xl sm:text-3xl font-semibold text-purple-600">Catálogo Completo</h1>
+            <p className="mt-2 text-sm sm:text-base text-gray-900">
+              Explore todos os veículos disponíveis. Filtros e busca avançada em breve.
+            </p>
+          </div>
         </div>
-      </div>
+        {loading ? (
+          <div className="mt-6 text-center text-gray-600">Carregando...</div>
+        ) : (
+          <ProductGrid products={products} />
+        )}
+      </section>
     </MainStyle>
   );
 }
