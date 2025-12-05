@@ -9,6 +9,17 @@ export default function Navbar() {
 
   useEffect(() => {
     setUser(authService.getUser());
+
+    // Escutar mudanças de autenticação
+    const handleAuthChange = () => {
+      setUser(authService.getUser());
+    };
+
+    window.addEventListener("auth-change", handleAuthChange);
+
+    return () => {
+      window.removeEventListener("auth-change", handleAuthChange);
+    };
   }, []);
 
   const handleLogout = () => {
