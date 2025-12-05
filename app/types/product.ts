@@ -1,22 +1,27 @@
-// Tipos de produto (customizável)
-export type ProductType = 
-  | 'Category1'
-  | 'Category2'
-  | 'Category3';
+export type VeiculoType = 
+  | 'SUV'
+  | 'Sedan'
+  | 'Hatch'
+  | 'Convertible'
+  | 'Coupe'
+  | 'Minivan'
+  | 'Pickup Truck'
+  | 'Wagon'
+  | 'Van'
+  | 'Other';
 
-// Entidade principal de produto
-export type Product = {
+export type CarProduct = {
   _id: string;
-  name: string;
-  category: ProductType;
-  year?: number;
+  brand: string;
+  modelName: string;
+  type: VeiculoType;
+  year: number;
   description?: string;
-  images?: string[];
+  imagens?: string[];
   createdAt?: string;
   updatedAt?: string;
 };
 
-// Dados de usuário
 export type User = {
   _id: string;
   name: string;
@@ -25,16 +30,10 @@ export type User = {
   createdAt?: string;
 };
 
-// Resposta de autenticação
-export type AuthResponse = {
-  user: User;
-  token: string;
-};
-
-// Criação de produto (formulário)
-export type ProductCreate = {
-  name: string;
-  category: ProductType;
-  year?: number;
+export type VehicleCreate = {
+  brand: string;
+  modelName: string;
+  year: number;
+  type: VeiculoType;
   description?: string;
 };
