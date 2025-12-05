@@ -1,3 +1,5 @@
+import { Link } from "react-router";
+
 export function meta() {
   return [
     { title: "Catálogo de Veículos" },
@@ -14,12 +16,12 @@ export default function Home() {
       <p className="text-xl text-gray-600 mb-8">
         Encontre o veículo perfeito para você
       </p>
-      <a
-        href="/vitrine"
+      <Link
+        to="/vitrine"
         className="inline-block bg-gray-900 text-white px-8 py-3 rounded-lg font-medium hover:bg-black transition-colors"
       >
         Ver Catálogo
-      </a>
+      </Link>
     </div>
   );
 }

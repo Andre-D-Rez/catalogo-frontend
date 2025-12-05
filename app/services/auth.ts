@@ -46,6 +46,8 @@ export const authService = {
     if (typeof window !== "undefined") {
       localStorage.setItem(TOKEN_KEY, data.token);
       localStorage.setItem(USER_KEY, JSON.stringify(data.user));
+      // Disparar evento customizado para atualizar a UI
+      window.dispatchEvent(new Event("auth-change"));
     }
 
     return data;
@@ -55,6 +57,8 @@ export const authService = {
     if (typeof window !== "undefined") {
       localStorage.removeItem(TOKEN_KEY);
       localStorage.removeItem(USER_KEY);
+      // Disparar evento customizado para atualizar a UI
+      window.dispatchEvent(new Event("auth-change"));
     }
   },
 
