@@ -34,14 +34,6 @@ export type CarProduct = {
   updatedAt?: string;
 };
 
-export type User = {
-  _id: string;
-  name: string;
-  email: string;
-  role: 'admin' | 'customer';
-  createdAt?: string;
-};
-
 export type VehicleCreate = {
   brand: string;
   modelName: string;

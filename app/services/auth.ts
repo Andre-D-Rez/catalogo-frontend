@@ -28,6 +28,29 @@ export const authService = {
     return data;
   },
 
+  async register(name: string, email: string, password: string): Promise<AuthResponse> {
+    const response = await fetch(`${API_BASE}/api/auth/register`, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ name, email, password }),
+    });
+
+    if (!response.ok) {
+      const error = await response.json();
+      throw new Error(error.message || "Erro ao cadastrar");
+    }
+
+    const data: AuthResponse = await response.json();
+    
+    // Salvar no localStorage
+    if (typeof window !== "undefined") {
+      localStorage.setItem(TOKEN_KEY, data.token);
+      localStorage.setItem(USER_KEY, JSON.stringify(data.user));
+    }
+
+    return data;
+  },
+
   logout() {
     if (typeof window !== "undefined") {
       localStorage.removeItem(TOKEN_KEY);
