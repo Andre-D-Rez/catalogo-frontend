@@ -1,3 +1,15 @@
+export type User = {
+  _id: string;
+  name: string;
+  email: string;
+  role: 'admin' | 'customer';
+  createdAt?: string;
+};
+
+export type AuthResponse = {
+  user: User;
+  token: string;
+};
 export type VeiculoType = 
   | 'SUV'
   | 'Sedan'
