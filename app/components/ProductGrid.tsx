@@ -7,7 +7,7 @@ export default function ProductGrid({ products }: { products?: CarProduct[] }) {
   if (list.length === 0) {
     return (
       <div className="mt-6 text-center text-gray-600">
-        <p>Nenhum produto disponível no momento.</p>
+        <p>Nenhum produto encontrado com os filtros aplicados.</p>
       </div>
     );
   }

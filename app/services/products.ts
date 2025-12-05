@@ -8,17 +8,25 @@ async function doFetch(path: string, options?: RequestInit) {
   return response;
 }
 
-export async function fetchAllProducts(filters?: { brand?: string; type?: string; year?: number }): Promise<CarProduct[]> {
+export async function fetchAllProducts(filters?: { 
+  brand?: string; 
+  type?: string; 
+  year?: number;
+  page?: number;
+  limit?: number;
+}): Promise<CarProduct[]> {
   try {
     const params = new URLSearchParams();
     if (filters?.brand) params.append("brand", filters.brand);
     if (filters?.type) params.append("type", filters.type);
     if (filters?.year) params.append("year", filters.year.toString());
+    if (filters?.page) params.append("page", filters.page.toString());
+    if (filters?.limit) params.append("limit", filters.limit.toString());
     
     const queryString = params.toString();
     const path = queryString ? `/api/veiculos?${queryString}` : "/api/veiculos";
     
-    const response = await doFetch(path);
+    const response = await fetch(`${API_BASE}${path}`);
     if (!response.ok) {
       console.error(`Falha ao buscar lista de veículos. Status: ${response.status}`);
       return [];
