@@ -2,12 +2,6 @@ import type { CarProduct } from "~/types/product";
 
 const API_BASE = (import.meta.env.VITE_URL ?? "http://localhost:3000").replace(/\/+$/, "");
 
-async function doFetch(path: string, options?: RequestInit) {
-  const url = `${API_BASE}${path}`;
-  const response = await fetch(url, options || { method: "GET" });
-  return response;
-}
-
 export async function fetchAllProducts(filters?: { 
   brand?: string; 
   type?: string; 
