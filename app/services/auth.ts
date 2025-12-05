@@ -1,18 +1,25 @@
 import type { AuthResponse, User } from "~/types/product";
-import { apiService } from "./api";
 
+const API_BASE = import.meta.env.VITE_URL?.replace(/\/+$/, "") || "http://localhost:3000";
 const TOKEN_KEY = "authToken";
 const USER_KEY = "user";
 
 export const authService = {
-  async register(name: string, email: string, password: string): Promise<User> {
-    const user = await apiService.post("/api/auth/register", { name, email, password });
-    return user;
-  },
-
   async login(email: string, password: string): Promise<AuthResponse> {
-    const data = await apiService.post("/api/auth/login", { email, password });
+    const response = await fetch(`${API_BASE}/api/auth/login`, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ email, password }),
+    });
+
+    if (!response.ok) {
+      const error = await response.json();
+      throw new Error(error.message || "Credenciais inválidas");
+    }
+
+    const data: AuthResponse = await response.json();
     
+    // Salvar no localStorage
     if (typeof window !== "undefined") {
       localStorage.setItem(TOKEN_KEY, data.token);
       localStorage.setItem(USER_KEY, JSON.stringify(data.user));
@@ -48,10 +55,12 @@ export const authService = {
   },
 
   isAdmin(): boolean {
-    return this.getUser()?.role === "admin";
+    const user = this.getUser();
+    return user?.role === "admin";
   },
 
   getRole(): 'admin' | 'customer' | null {
-    return this.getUser()?.role || null;
+    const user = this.getUser();
+    return user?.role || null;
   },
 };
