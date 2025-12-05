@@ -31,6 +31,25 @@ export async function fetchAllProducts(filters?: { brand?: string; type?: string
   }
 }
 
+export async function fetchProductById(id: string): Promise<CarProduct | null> {
+  try {
+    const response = await fetch(`${API_BASE}/api/veiculos/${id}`);
+    if (!response.ok) {
+      if (response.status === 404) {
+        console.warn(`Veículo ${id} não encontrado (404).`);
+        return null;
+      }
+      console.error(`Falha ao buscar veículo ${id}. Status: ${response.status}`);
+      return null;
+    }
+    const data = await response.json();
+    return data as CarProduct;
+  } catch (error) {
+    console.error(`Erro de rede ao buscar produto ${id}:`, error);
+    return null;
+  }
+}
+
 export async function createVehicle(vehicle: any, token: string): Promise<CarProduct | null> {
   try {
     const response = await fetch(`${API_BASE}/api/veiculos`, {
