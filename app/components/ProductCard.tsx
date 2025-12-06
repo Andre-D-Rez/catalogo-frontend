@@ -2,7 +2,7 @@ import { Link } from "react-router";
 import type { CarProduct } from "~/types/product";
 
 export default function ProductCard({ product }: { product: CarProduct }) {
-  const displayName = product.modelName;
+  const displayName = `${product.brand} ${product.modelName}`;
   const imageUrl = product.imagens?.[0];
   
   return (
