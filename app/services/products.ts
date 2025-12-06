@@ -26,7 +26,22 @@ export async function fetchAllProducts(filters?: {
       return [];
     }
     const data = await response.json();
-    return Array.isArray(data) ? data : [];
+    
+    // Log para debug
+    console.log("Resposta da API:", data);
+    
+    // Se a resposta contiver 'data', é o array de veículos
+    if (data?.data && Array.isArray(data.data)) {
+      return data.data;
+    }
+    
+    // Se for um array direto
+    if (Array.isArray(data)) {
+      return data;
+    }
+    
+    console.warn("Formato de resposta inesperado:", data);
+    return [];
   } catch (error) {
     console.error("Erro de rede ao buscar produtos:", error);
     return [];
